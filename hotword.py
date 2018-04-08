@@ -3,6 +3,9 @@ import sys
 import signal
 import speech_recognition as sr
 import os
+import uuid
+
+from wit_module import wit_module
 
 """
 This demo file shows you how to use the new_message_callback to interact with
@@ -15,25 +18,33 @@ https://pypi.python.org/pypi/SpeechRecognition/
 
 interrupted = False
 
+wit_object = wit_module.CallWit()
+
+def generate_session_id():
+    session_id = uuid.uuid4()
+    return session_id
 
 def audioRecorderCallback(fname):
-    print "converting audio to text"
     r = sr.Recognizer()
     with sr.AudioFile(fname) as source:
         audio = r.record(source)  # read the entire audio file
+
+    print "Understanding what you said ..."
     # recognize speech using Google Speech Recognition
     try:
         # for testing purposes, we're just using the default API key
         # to use another API key, use `r.recognize_google(audio, key="GOOGLE_SPEECH_RECOGNITION_API_KEY")`
         # instead of `r.recognize_google(audio)`
-        print(r.recognize_google(audio))
+        response = r.recognize_google(audio)
+        print "You said : {}".format(response)
+        session_id = generate_session_id()
+        wit_object.handle_message(session_id=session_id, user_query=response)
     except sr.UnknownValueError:
         print "Google Speech Recognition could not understand audio"
     except sr.RequestError as e:
         print "Could not request results from Google Speech Recognition service; {0}".format(e)
 
-    os.remove(fname)
-
+    # os.remove(fname)
 
 
 def detectedCallback():
@@ -41,7 +52,8 @@ def detectedCallback():
   sys.stdout.flush()
 
 def hotwordDetected():
-    hello_dobby = snowboydecoder_audiorecorder.play_audio_file()
+    hello_dobby = snowboydecoder_audiorecorder.play_audio_file
+    print "I'm listening ..."
 
 def signal_handler(signal, frame):
     global interrupted
@@ -69,6 +81,6 @@ print "Listening... Press Ctrl+C to exit"
 detector.start(detected_callback=hotwordDetected,
                audio_recorder_callback=audioRecorderCallback,
                interrupt_check=interrupt_callback,
-               sleep_time=0.01)
+               sleep_time=0.08)
 
 detector.terminate()
