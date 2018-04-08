@@ -2,4 +2,4 @@
 *.pmdl
 *.wav
 .DS_STORE
-
+.env
