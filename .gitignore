@@ -1,2 +1,5 @@
-*.pyc
-*.pmdl
+.pyc
+.pmdl
+audio_output/
+.wav
+
