@@ -13,13 +13,14 @@ from contextlib import contextmanager
 logging.basicConfig()
 logger = logging.getLogger("snowboy")
 logger.setLevel(logging.INFO)
-TOP_DIR = os.path.dirname(os.path.abspath(__file__))
+# TOP_DIR = os.path.dirname(os.path.abspath(__file__))
+TOP_DIR = os.getcwd()
 
-RESOURCE_FILE = os.path.join(TOP_DIR, "resources/common.res")
-DETECT_DING = os.path.join(TOP_DIR, "resources/ding.wav")
-DETECT_DONG = os.path.join(TOP_DIR, "resources/dong.wav")
-DETECT_DOBBY = os.path.join(TOP_DIR, "resources/Hello.wav")
-
+RESOURCE_FILE = os.path.join(TOP_DIR, "snowboy/resources/common.res")
+DETECT_DING = os.path.join(TOP_DIR, "snowboy/resources/ding.wav")
+DETECT_DONG = os.path.join(TOP_DIR, "snowboy/resources/dong.wav")
+DETECT_DOBBY = os.path.join(TOP_DIR, "snowboy/resources/Hello.wav")
+AUDIO_DIR = os.path.join(TOP_DIR, "audio_output")
 
 ERROR_HANDLER_FUNC = CFUNCTYPE(None, c_char_p, c_int, c_char_p, c_int, c_char_p)
 
@@ -242,7 +243,8 @@ class HotwordDetector(object):
         """
         Save the message stored in self.recordedData to a timestamped file.
         """
-        filename = 'output' + str(int(time.time())) + '.wav'
+        # os.chdir(AUDIO_DIR)
+        filename = AUDIO_DIR + '/' + 'output' + str(int(time.time())) + '.wav'
         data = b''.join(self.recordedData)
 
         #use wave to save data
@@ -255,6 +257,7 @@ class HotwordDetector(object):
         wf.writeframes(data)
         wf.close()
         logger.debug("finished saving: " + filename)
+        # os.chdir(TOP_DIR)
         return filename
 
     def terminate(self):
