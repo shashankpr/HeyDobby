@@ -1,4 +1,5 @@
-.pyc
-.pmdl
-.wav
+*.pyc
+*.pmdl
+*.wav
+.DS_STORE
 
