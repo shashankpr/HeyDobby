@@ -29,12 +29,12 @@ def py_error_handler(filename, line, function, err, fmt):
 
 c_error_handler = ERROR_HANDLER_FUNC(py_error_handler)
 
-# @contextmanager
-# def no_alsa_error():
-#     asound = cdll.LoadLibrary('libasound.so')
-#     asound.snd_lib_error_set_handler(c_error_handler)
-#     yield
-#     asound.snd_lib_error_set_handler(None)
+@contextmanager
+def no_alsa_error():
+    asound = cdll.LoadLibrary('libasound.so')
+    asound.snd_lib_error_set_handler(c_error_handler)
+    yield
+    asound.snd_lib_error_set_handler(None)
 
 class RingBuffer(object):
     """Ring buffer to hold audio from PortAudio"""
@@ -61,8 +61,8 @@ def play_audio_file(fname=DETECT_DOBBY):
     """
     ding_wav = wave.open(fname, 'rb')
     ding_data = ding_wav.readframes(ding_wav.getnframes())
-    # with no_alsa_error():
-    audio = pyaudio.PyAudio()
+    with no_alsa_error():
+        audio = pyaudio.PyAudio()
     stream_out = audio.open(
         format=audio.get_format_from_width(ding_wav.getsampwidth()),
         channels=ding_wav.getnchannels(),
@@ -123,8 +123,8 @@ class HotwordDetector(object):
 
         self.ring_buffer = RingBuffer(
             self.detector.NumChannels() * self.detector.SampleRate() * 5)
-        # with no_alsa_error():
-        self.audio = pyaudio.PyAudio()
+        with no_alsa_error():
+            self.audio = pyaudio.PyAudio()
         self.stream_in = self.audio.open(
             input=True, output=False,
             format=self.audio.get_format_from_width(

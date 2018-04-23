@@ -52,7 +52,7 @@ def detectedCallback():
   sys.stdout.flush()
 
 def hotwordDetected():
-    hello_dobby = snowboydecoder_audiorecorder.play_audio_file
+    snowboydecoder_audiorecorder.play_audio_file()
     print "I'm listening ..."
 
 def signal_handler(signal, frame):
