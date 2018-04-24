@@ -12,9 +12,13 @@ from contextlib import contextmanager
 
 logging.basicConfig()
 logger = logging.getLogger("snowboy")
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.DEBUG)
 # TOP_DIR = os.path.dirname(os.path.abspath(__file__))
 TOP_DIR = os.getcwd()
+
+MV_SAMPLERATE = 16000
+MV_CHANNELS = 1
+MV_INDEX = 3
 
 RESOURCE_FILE = os.path.join(TOP_DIR, "snowboy/resources/common.res")
 DETECT_DING = os.path.join(TOP_DIR, "snowboy/resources/ding.wav")
@@ -137,11 +141,11 @@ class HotwordDetector(object):
             input=True, output=False,
             format=self.audio.get_format_from_width(
                 self.detector.BitsPerSample() / 8),
-            channels=1,
-            rate=16000,
+            channels=MV_CHANNELS,
+            rate=MV_SAMPLERATE,
             frames_per_buffer=2048,
             stream_callback=audio_callback,
-            input_device_index = 3)
+            input_device_index = MV_INDEX)
 
 
     def start(self, detected_callback=play_audio_file,

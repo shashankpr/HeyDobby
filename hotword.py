@@ -56,7 +56,7 @@ def detectedCallback():
 
 def hotwordDetected():
     ec.set_everloop_color(green=10)
-    snowboydecoder_audiorecorder.play_audio_file()
+    #snowboydecoder_audiorecorder.play_audio_file()
     print "I'm listening ..."
 
 def signal_handler(signal, frame):

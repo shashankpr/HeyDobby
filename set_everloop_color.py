@@ -55,11 +55,11 @@ def set_everloop_color(red=0, green=0, blue=0, white=0):
         image.append(ledValue)
 
     # add the "image" to the config driver
-    config.image.led.extend(image)
+    # config.image.led.extend(image)
 
     # send a serialized string of the driver config
     # to the config socket
-    config_socket.send(config.SerializeToString())
+    # config_socket.send(config.SerializeToString())
 
 
 # if __name__ == '__main__':
