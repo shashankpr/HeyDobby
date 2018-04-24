@@ -61,12 +61,11 @@ def set_everloop_color(red=0, green=0, blue=0, white=0):
     # to the config socket
     config_socket.send(config.SerializeToString())
 
-def everloop_animate(end_animation=False, color_range=10):
-    while not end_animation:
-        for color_value in range(color_range)+1:
-            set_everloop_color(blue=color_value)
+def everloop_animate(end_animation=False, color_range=10, delay=10):
+    for color_value in range(color_range)+1:
+        set_everloop_color(red=10, green=5)
+        time.sleep(delay)
 
-    return
 # if __name__ == '__main__':
 #     while True:
 #         # Set random values for R, G and B
