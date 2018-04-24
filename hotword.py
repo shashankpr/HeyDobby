@@ -16,7 +16,7 @@ Information on installing the speech recognition library can be found at:
 https://pypi.python.org/pypi/SpeechRecognition/
 """
 
-
+ec.set_everloop_color()
 interrupted = False
 
 wit_object = wit_module.CallWit()
@@ -28,6 +28,7 @@ def generate_session_id():
 def audioRecorderCallback(fname):
     r = sr.Recognizer()
     with sr.AudioFile(fname) as source:
+        ec.set_everloop_color(blue=10)
         audio = r.record(source)  # read the entire audio file
 
     print "Understanding what you said ..."
@@ -42,6 +43,7 @@ def audioRecorderCallback(fname):
         wit_object.handle_message(session_id=session_id, user_query=response)
     except sr.UnknownValueError:
         print "Google Speech Recognition could not understand audio"
+        ec.set_everloop_color(red=10)
     except sr.RequestError as e:
         print "Could not request results from Google Speech Recognition service; {0}".format(e)
 
@@ -63,7 +65,7 @@ def signal_handler(signal, frame):
 
 
 def interrupt_callback():
-    ec.set_everloop_color(red=10)
+    ec.set_everloop_color(white=10)
     global interrupted
     return interrupted
 
@@ -79,7 +81,6 @@ signal.signal(signal.SIGINT, signal_handler)
 
 detector = snowboydecoder_audiorecorder.HotwordDetector(model, sensitivity=0.38)
 print "Listening... Press Ctrl+C to exit"
-ec.set_everloop_color(blue=10)
 
 # main loop
 detector.start(detected_callback=hotwordDetected,
@@ -87,4 +88,5 @@ detector.start(detected_callback=hotwordDetected,
                interrupt_check=interrupt_callback,
                sleep_time=0.08)
 
+ec.set_everloop_color()
 detector.terminate()
