@@ -125,14 +125,23 @@ class HotwordDetector(object):
             self.detector.NumChannels() * self.detector.SampleRate() * 5)
         with no_alsa_error():
             self.audio = pyaudio.PyAudio()
+        # self.stream_in = self.audio.open(
+        #     input=True, output=False,
+        #     format=self.audio.get_format_from_width(
+        #         self.detector.BitsPerSample() / 8),
+        #     channels=self.detector.NumChannels(),
+        #     rate=self.detector.SampleRate(),
+        #     frames_per_buffer=2048,
+        #     stream_callback=audio_callback)
         self.stream_in = self.audio.open(
             input=True, output=False,
             format=self.audio.get_format_from_width(
                 self.detector.BitsPerSample() / 8),
-            channels=self.detector.NumChannels(),
-            rate=self.detector.SampleRate(),
+            channels=1,
+            rate=16000,
             frames_per_buffer=2048,
-            stream_callback=audio_callback)
+            stream_callback=audio_callback,
+            input_device_index = 5)
 
 
     def start(self, detected_callback=play_audio_file,
