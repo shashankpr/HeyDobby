@@ -53,8 +53,7 @@ def set_everloop_color(red=0, green=0, blue=0, white=0):
         ledValue.green = green
         ledValue.white = white
         image.append(ledValue)
-	#config.image.led.extend(image)
-	#config_socket.send(config.SerializeToString())
+
     # add the "image" to the config driver
     config.image.led.extend(image)
 
@@ -62,7 +61,12 @@ def set_everloop_color(red=0, green=0, blue=0, white=0):
     # to the config socket
     config_socket.send(config.SerializeToString())
 
+def everloop_animate(end_animation=False, color_range=10):
+    while not end_animation:
+        for color_value in range(color_range)+1:
+            set_everloop_color(blue=color_value)
 
+    return
 # if __name__ == '__main__':
 #     while True:
 #         # Set random values for R, G and B
