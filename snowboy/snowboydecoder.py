@@ -8,8 +8,6 @@ import wave
 import os
 import logging
 
-# import speech
-
 logging.basicConfig()
 logger = logging.getLogger("snowboy")
 logger.setLevel(logging.INFO)
@@ -18,7 +16,6 @@ TOP_DIR = os.path.dirname(os.path.abspath(__file__))
 RESOURCE_FILE = os.path.join(TOP_DIR, "resources/common.res")
 DETECT_DING = os.path.join(TOP_DIR, "resources/ding.wav")
 DETECT_DONG = os.path.join(TOP_DIR, "resources/dong.wav")
-DETECT_DOBBY = os.path.join(TOP_DIR, "resources/Hello.wav")
 
 
 class RingBuffer(object):
@@ -37,7 +34,7 @@ class RingBuffer(object):
         return tmp
 
 
-def play_audio_file(fname=DETECT_DOBBY):
+def play_audio_file(fname=DETECT_DING):
     """Simple callback function to play a wave file. By default it plays
     a Ding sound.
 
@@ -57,12 +54,6 @@ def play_audio_file(fname=DETECT_DOBBY):
     stream_out.stop_stream()
     stream_out.close()
     audio.terminate()
-
-    # TODO Write a better way to transmit the snowboy data to SR.
-    # speech.speech_text()
-
-def hotword_detected():
-    print "Hello !!!"
 
 
 class HotwordDetector(object):
@@ -113,15 +104,15 @@ class HotwordDetector(object):
 
         self.ring_buffer = RingBuffer(
             self.detector.NumChannels() * self.detector.SampleRate() * 5)
-        # self.audio = pyaudio.PyAudio()
-        # self.stream_in = self.audio.open(
-        #     input=True, output=False,
-        #     format=self.audio.get_format_from_width(
-        #         self.detector.BitsPerSample() / 8),
-        #     channels=self.detector.NumChannels(),
-        #     rate=self.detector.SampleRate(),
-        #     frames_per_buffer=2048,
-        #     stream_callback=audio_callback)
+        self.audio = pyaudio.PyAudio()
+        self.stream_in = self.audio.open(
+            input=True, output=False,
+            format=self.audio.get_format_from_width(
+                self.detector.BitsPerSample() / 8),
+            channels=self.detector.NumChannels(),
+            rate=self.detector.SampleRate(),
+            frames_per_buffer=2048,
+            stream_callback=audio_callback)
 
 
     def start(self, detected_callback=play_audio_file,
@@ -143,16 +134,6 @@ class HotwordDetector(object):
         :param float sleep_time: how much time in second every loop waits.
         :return: None
         """
-        self.audio = pyaudio.PyAudio()
-        self.stream_in = self.audio.open(
-            input=True, output=False,
-            format=self.audio.get_format_from_width(
-                self.detector.BitsPerSample() / 8),
-            channels=self.detector.NumChannels(),
-            rate=self.detector.SampleRate(),
-            frames_per_buffer=2048,
-            stream_callback=audio_callback)
-            
         if interrupt_check():
             logger.debug("detect voice return")
             return
@@ -189,7 +170,6 @@ class HotwordDetector(object):
                 callback = detected_callback[ans-1]
                 if callback is not None:
                     callback()
-
 
         logger.debug("finished.")
 
