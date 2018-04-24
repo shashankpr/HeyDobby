@@ -65,7 +65,7 @@ def signal_handler(signal, frame):
 
 
 def interrupt_callback():
-    ec.set_everloop_color(white=10)
+    #ec.set_everloop_color(red=10)
     global interrupted
     return interrupted
 
@@ -81,12 +81,12 @@ signal.signal(signal.SIGINT, signal_handler)
 
 detector = snowboydecoder_audiorecorder.HotwordDetector(model, sensitivity=0.38)
 print "Listening... Press Ctrl+C to exit"
-
+#ec.set_everloop_color(red=10, blue=10)
 # main loop
 detector.start(detected_callback=hotwordDetected,
                audio_recorder_callback=audioRecorderCallback,
                interrupt_check=interrupt_callback,
                sleep_time=0.08)
 
-ec.set_everloop_color()
+# ec.set_everloop_color()
 detector.terminate()
