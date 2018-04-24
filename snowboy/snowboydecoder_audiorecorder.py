@@ -19,7 +19,7 @@ TOP_DIR = os.getcwd()
 RESOURCE_FILE = os.path.join(TOP_DIR, "snowboy/resources/common.res")
 DETECT_DING = os.path.join(TOP_DIR, "snowboy/resources/ding.wav")
 DETECT_DONG = os.path.join(TOP_DIR, "snowboy/resources/dong.wav")
-DETECT_DOBBY = os.path.join(TOP_DIR, "snowboy/resources/Hello.wav")
+DETECT_DOBBY = os.path.join(TOP_DIR, "dobby_resources/Hello.wav")
 AUDIO_DIR = os.path.join(TOP_DIR, "audio_output")
 
 ERROR_HANDLER_FUNC = CFUNCTYPE(None, c_char_p, c_int, c_char_p, c_int, c_char_p)
@@ -141,7 +141,7 @@ class HotwordDetector(object):
             rate=16000,
             frames_per_buffer=2048,
             stream_callback=audio_callback,
-            input_device_index = 5)
+            input_device_index = 3)
 
 
     def start(self, detected_callback=play_audio_file,
