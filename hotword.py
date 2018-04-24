@@ -6,6 +6,7 @@ import os
 import uuid
 
 from wit_module import wit_module
+import set_everloop_color as ec
 
 """
 This demo file shows you how to use the new_message_callback to interact with
@@ -52,6 +53,7 @@ def detectedCallback():
   sys.stdout.flush()
 
 def hotwordDetected():
+    ec.set_everloop_color(green=10)
     snowboydecoder_audiorecorder.play_audio_file()
     print "I'm listening ..."
 
@@ -61,6 +63,7 @@ def signal_handler(signal, frame):
 
 
 def interrupt_callback():
+    ec.set_everloop_color(red=10)
     global interrupted
     return interrupted
 
@@ -76,6 +79,7 @@ signal.signal(signal.SIGINT, signal_handler)
 
 detector = snowboydecoder_audiorecorder.HotwordDetector(model, sensitivity=0.38)
 print "Listening... Press Ctrl+C to exit"
+ec.set_everloop_color(blue=10)
 
 # main loop
 detector.start(detected_callback=hotwordDetected,
