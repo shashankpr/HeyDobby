@@ -4,11 +4,11 @@ import signal
 import speech_recognition as sr
 import os
 import uuid
-# from matrixio_hal import everloop
+import multiprocessing
 
 from wit_module import wit_module
 import set_everloop_color as ec
-# import led_rotate as lr
+import led_rotate as lr
 
 """
 This demo file shows you how to use the new_message_callback to interact with
@@ -23,6 +23,7 @@ interrupted = False
 end_animation = False
 
 wit_object = wit_module.CallWit()
+p = multiprocessing.Process(target=lr.rotate_leds)
 
 def generate_session_id():
     session_id = uuid.uuid4()
@@ -34,6 +35,8 @@ def audioRecorderCallback(fname):
         audio = r.record(source)  # read the entire audio file
 
     print "Understanding what you said ..."
+    if p.is_alive():
+        p.terminate()
     # recognize speech using Google Speech Recognition
     try:
         # for testing purposes, we're just using the default API key
@@ -61,6 +64,7 @@ def hotwordDetected():
     ec.set_everloop_color(green=10)
     #snowboydecoder_audiorecorder.play_audio_file()
     print "I'm listening ..."
+    p.start()
 
 def signal_handler(signal, frame):
     global interrupted

@@ -24,5 +24,5 @@ def rotate_leds(start_rotation=True):
         image.rotate(1)
         time.sleep(0.03)
 
-if __name__ == '__main__':
-    rotate_leds()
+# if __name__ == '__main__':
+#     rotate_leds()
