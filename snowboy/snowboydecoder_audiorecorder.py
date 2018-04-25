@@ -232,6 +232,12 @@ class HotwordDetector(object):
                     continue
 
             elif state == "ACTIVE":
+                print "leds .."
+                led_image = lr.set_leds()
+                led_image.render()
+                led_image.rotate(1)
+                # time.sleep(0.07)
+
                 stopRecording = False
                 if recordingCount > recording_timeout:
                     stopRecording = True

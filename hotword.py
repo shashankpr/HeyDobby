@@ -4,11 +4,9 @@ import signal
 import speech_recognition as sr
 import os
 import uuid
-import multiprocessing
 
 from wit_module import wit_module
 import set_everloop_color as ec
-import led_rotate as lr
 
 """
 This demo file shows you how to use the new_message_callback to interact with
@@ -23,7 +21,6 @@ interrupted = False
 end_animation = False
 
 wit_object = wit_module.CallWit()
-# p = multiprocessing.Process(target=lr.set_leds)
 
 def generate_session_id():
     session_id = uuid.uuid4()
@@ -35,10 +32,7 @@ def audioRecorderCallback(fname):
         audio = r.record(source)  # read the entire audio file
 
     print "Understanding what you said ..."
-    #if p.is_alive():
-    #    p.terminate()
-	#p.join()
-        #print "Killed led process"
+
     # recognize speech using Google Speech Recognition
     try:
         # for testing purposes, we're just using the default API key
@@ -66,8 +60,6 @@ def hotwordDetected():
     ec.set_everloop_color(green=10)
     #snowboydecoder_audiorecorder.play_audio_file()
     print "I'm listening ..."
-    #p.start()
-    #print "starting led process"
 
 def signal_handler(signal, frame):
     global interrupted
@@ -89,18 +81,15 @@ model = sys.argv[1]
 # capture SIGINT signal, e.g., Ctrl+C
 signal.signal(signal.SIGINT, signal_handler)
 
-detector = snowboydecoder_audiorecorder.HotwordDetector(model, sensitivity=0.38)
-#global p = multiprocessing.Process(target=lr.set_leds)
+detector = snowboydecoder_audiorecorder.HotwordDetector(model, sensitivity=0.50, audio_gain=4)
+
 print "Listening... Press Ctrl+C to exit"
-#ec.set_everloop_color(red=10, blue=10)
-# main loop
-# p.start()
+
 detector.start(detected_callback=hotwordDetected,
                audio_recorder_callback=audioRecorderCallback,
                interrupt_check=interrupt_callback,
                sleep_time=0.08)
 
 ec.set_everloop_color()
-# p.terminate()
-# p.join()
+
 detector.terminate()

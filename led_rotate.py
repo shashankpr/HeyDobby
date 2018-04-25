@@ -15,7 +15,8 @@ def set_leds():
             image.leds[i].red = 17
             image.leds[i].green = cnt // 5
             cnt -= 1
-    for i in range(10):
-        image.render()
-        image.rotate(1)
-        time.sleep(0.07)
+    return image
+    # for i in range(10):
+    #     image.render()
+    #     image.rotate(1)
+    #     time.sleep(0.07)
