@@ -232,6 +232,7 @@ class HotwordDetector(object):
                     continue
 
             elif state == "ACTIVE":
+                print "rotating leds"
                 lr.rotate_leds(True)
                 stopRecording = False
                 if recordingCount > recording_timeout:
@@ -246,6 +247,7 @@ class HotwordDetector(object):
 
                 if stopRecording == True:
                     fname = self.saveMessage()
+                    print "stop leds"
                     lr.rotate_leds(False)
                     audio_recorder_callback(fname)
                     state = "PASSIVE"
