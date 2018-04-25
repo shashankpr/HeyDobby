@@ -4,9 +4,11 @@ import signal
 import speech_recognition as sr
 import os
 import uuid
+# from matrixio_hal import everloop
 
 from wit_module import wit_module
 import set_everloop_color as ec
+# import led_rotate as lr
 
 """
 This demo file shows you how to use the new_message_callback to interact with
@@ -26,20 +28,10 @@ def generate_session_id():
     session_id = uuid.uuid4()
     return session_id
 
-def record_audio_for_recog(fname):
-    while not end_animation:
-        ec.everloop_animate()
-        r = sr.Recognizer()
-        with sr.AudioFile(fname) as source:
-            audio = r.record(source)  # read the entire audio file
-
-        global end_animation
-        end_animation = True
-        ec.everloop_animate(end_animation=end_animation)
-        return audio, r
-
 def audioRecorderCallback(fname):
-    audio, r = record_audio_for_recog(fname)
+    r = sr.Recognizer()
+    with sr.AudioFile(fname) as source:
+        audio = r.record(source)  # read the entire audio file
 
     print "Understanding what you said ..."
     # recognize speech using Google Speech Recognition
@@ -69,7 +61,6 @@ def hotwordDetected():
     ec.set_everloop_color(green=10)
     #snowboydecoder_audiorecorder.play_audio_file()
     print "I'm listening ..."
-    # ec.everloop_animate()
 
 def signal_handler(signal, frame):
     global interrupted
