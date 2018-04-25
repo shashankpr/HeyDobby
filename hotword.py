@@ -37,6 +37,7 @@ def audioRecorderCallback(fname):
     print "Understanding what you said ..."
     if p.is_alive():
         p.terminate()
+        print "Killed led process"
     # recognize speech using Google Speech Recognition
     try:
         # for testing purposes, we're just using the default API key
@@ -65,6 +66,7 @@ def hotwordDetected():
     #snowboydecoder_audiorecorder.play_audio_file()
     print "I'm listening ..."
     p.start()
+    print "starting led process"
 
 def signal_handler(signal, frame):
     global interrupted
