@@ -6,7 +6,7 @@ import os
 import uuid
 
 from wit_module import wit_module
-import set_everloop_color as ec
+import set_led as led
 
 """
 This demo file shows you how to use the new_message_callback to interact with
@@ -16,7 +16,7 @@ Information on installing the speech recognition library can be found at:
 https://pypi.python.org/pypi/SpeechRecognition/
 """
 
-ec.set_everloop_color()
+
 interrupted = False
 end_animation = False
 
@@ -42,10 +42,10 @@ def audioRecorderCallback(fname):
         print "You said : {}".format(response)
         session_id = generate_session_id()
         wit_object.handle_message(session_id=session_id, user_query=response)
-        ec.set_everloop_color(red=10, blue=5)
+        led.set_everloop_response()
     except sr.UnknownValueError:
         print "Google Speech Recognition could not understand audio"
-        ec.set_everloop_color(red=10)
+        led.set_everloop_error()
     except sr.RequestError as e:
         print "Could not request results from Google Speech Recognition service; {0}".format(e)
 
@@ -53,11 +53,11 @@ def audioRecorderCallback(fname):
 
 
 def detectedCallback():
-  sys.stdout.write("recording audio...")
-  sys.stdout.flush()
+    sys.stdout.write("recording audio...")
+    sys.stdout.flush()
 
 def hotwordDetected():
-    ec.set_everloop_color(green=10)
+    led.set_everloop_detection()
     #snowboydecoder_audiorecorder.play_audio_file()
     print "I'm listening ..."
 
@@ -90,6 +90,5 @@ detector.start(detected_callback=hotwordDetected,
                interrupt_check=interrupt_callback,
                sleep_time=0.08)
 
-ec.set_everloop_color()
 
 detector.terminate()

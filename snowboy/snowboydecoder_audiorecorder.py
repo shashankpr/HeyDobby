@@ -10,7 +10,7 @@ import logging
 from ctypes import *
 from contextlib import contextmanager
 
-import led_rotate as lr
+import set_led as led
 
 logging.basicConfig()
 logger = logging.getLogger("snowboy")
@@ -229,15 +229,12 @@ class HotwordDetector(object):
 
                     if audio_recorder_callback is not None:
                         state = "ACTIVE"
+                        led_image = led.set_everloop_listening()
                     continue
 
             elif state == "ACTIVE":
-                print "leds .."
-                led_image = lr.set_leds()
                 led_image.render()
                 led_image.rotate(1)
-                # time.sleep(0.07)
-
                 stopRecording = False
                 if recordingCount > recording_timeout:
                     stopRecording = True

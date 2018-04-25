@@ -2,7 +2,13 @@ from matrixio_hal import everloop
 from collections import deque
 import time
 
-def set_leds():
+
+def set_everloop_detection():
+    image = everloop.Image(init_color_name='green')
+    image.render()
+
+def set_everloop_listening():
+    # LED rotation
     image = everloop.Image()
     image.leds[0].red = 20
     cnt = 1
@@ -16,7 +22,11 @@ def set_leds():
             image.leds[i].green = cnt // 5
             cnt -= 1
     return image
-    # for i in range(10):
-    #     image.render()
-    #     image.rotate(1)
-    #     time.sleep(0.07)
+
+def set_everloop_response():
+    image = everloop.Image(init_color_name='blue')
+    image.render()
+
+def set_everloop_error():
+    image = everloop.Image(init_color_name='red')
+    image.render()
