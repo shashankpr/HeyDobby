@@ -23,7 +23,7 @@ interrupted = False
 end_animation = False
 
 wit_object = wit_module.CallWit()
-p = multiprocessing.Process(target=lr.rotate_leds)
+p = multiprocessing.Process(target=lr.set_leds())
 
 def generate_session_id():
     session_id = uuid.uuid4()
